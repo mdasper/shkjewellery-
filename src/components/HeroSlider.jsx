@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, ArrowRight, ChevronLeft, ChevronRight, ShieldCheck, TrendingUp, Award, RotateCcw } from 'lucide-react';
+import { Sparkles, ArrowRight, ChevronLeft, ChevronRight, ShieldCheck, TrendingUp, Award, RotateCcw, Box } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Floating3DParticles from './Floating3DParticles';
+import Hero3DCanvas from './Hero3DCanvas';
 
 export default function HeroSlider() {
   const { t } = useTranslation();
@@ -93,6 +94,11 @@ export default function HeroSlider() {
         
         {/* 3D Ambient Gold Floating Particles */}
         <Floating3DParticles />
+
+        {/* 3D WebGL Floating Luxury Gold Ornaments with Mouse Parallax */}
+        <div className="absolute inset-y-0 right-0 w-full sm:w-1/2 lg:w-5/12 z-20 pointer-events-none hidden sm:block">
+          <Hero3DCanvas activeSlide={current} />
+        </div>
 
         {/* Top Slim Golden Progress Line */}
         <div className="absolute top-0 inset-x-0 h-1 bg-black/40 z-30 overflow-hidden">

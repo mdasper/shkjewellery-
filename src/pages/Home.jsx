@@ -10,6 +10,9 @@ import OldGoldCalculator from '../components/OldGoldCalculator';
 import BridalSetPlanner from '../components/BridalSetPlanner';
 import GoldRateAlertModal from '../components/GoldRateAlertModal';
 import ShowroomTourModal from '../components/ShowroomTourModal';
+import ProductCard3D from '../components/ProductCard3D';
+import Quick3DViewerModal from '../components/Quick3DViewerModal';
+import VirtualTryOnModal from '../components/VirtualTryOnModal';
 import { useWishlist } from '../context/WishlistContext';
 import { 
   Sparkles, ArrowRight, ShieldCheck, Award, Heart, Star, 
@@ -26,6 +29,10 @@ export default function Home() {
   const [isBridalPlannerOpen, setIsBridalPlannerOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isTourOpen, setIsTourOpen] = useState(false);
+  const [selected3DProduct, setSelected3DProduct] = useState(null);
+  const [is3DModalOpen, setIs3DModalOpen] = useState(false);
+  const [selectedARProduct, setSelectedARProduct] = useState(null);
+  const [isARModalOpen, setIsARModalOpen] = useState(false);
 
   const allCategoryItems = [
     {
@@ -448,69 +455,25 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Collections Grid with Silky Layout Animation */}
+            {/* Collections Grid with 3D Tilt & Specular Glint Cards */}
             <motion.div 
               layout
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full"
             >
               <AnimatePresence>
-                {filteredItems.map((cat) => (
-                  <motion.div
-                    layout
-                    key={cat.title}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.4 }}
-                    className="group bg-gradient-to-b from-[#3E070B] to-[#200305] rounded-2xl overflow-hidden border-2 border-brand-gold/40 hover:border-brand-gold hover:shadow-gold-glow transition-all duration-300 flex flex-col justify-between cursor-pointer"
-                  >
-                    <div className="relative h-64 sm:h-72 overflow-hidden bg-black">
-                      <img 
-                        src={cat.image} 
-                        alt={cat.title} 
-                        className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 filter brightness-95"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#200305] via-transparent to-transparent opacity-90"></div>
-                      
-                      {/* Top Badges */}
-                      <div className="absolute top-3 inset-x-3 flex justify-between items-center z-10">
-                        <span className="bg-black/80 backdrop-blur-md text-brand-gold text-[10px] font-cinzel font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-brand-gold/40 shadow">{cat.categoryLabel || cat.category}</span>
-                        <span className="bg-brand-gold text-brand-maroon text-[10px] font-cinzel font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow">
-                          {cat.purity}
-                        </span>
-                      </div>
-
-                      {/* Weight Estimate Tag */}
-                      <div className="absolute bottom-3 left-3 z-10">
-                        <span className="text-[11px] font-sans font-semibold text-brand-cream/90 bg-black/60 backdrop-blur-sm px-2.5 py-0.5 rounded border border-white/10">
-                          Est: {cat.estWeight}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="p-6 text-left space-y-3 flex-1 flex flex-col justify-between">
-                      <div>
-                        <h3 className="font-cormorant text-2xl font-bold text-white group-hover:text-brand-goldLight transition-colors">
-                          {cat.title}
-                        </h3>
-                        <p className="text-xs text-brand-cream/85 font-medium line-clamp-2 pt-1 font-sans leading-relaxed">
-                          {cat.subtitle}
-                        </p>
-                      </div>
-
-                      <div className="pt-4 border-t border-brand-gold/20 flex items-center justify-between">
-                        <Link 
-                          to={cat.path}
-                          className="inline-flex items-center space-x-2 text-xs font-cinzel font-bold text-brand-gold hover:text-white transition-colors group-hover:translate-x-1 duration-300"
-                        >
-                          <span>{t('collections.viewDetails', 'Explore Gallery')}</span>
-                          <ArrowRight size={14} />
-                        </Link>
-
-                        <span className="text-[10px] font-sans text-brand-cream/60 uppercase">{t('home.items.maduraiStock', 'Madurai Stock')}</span>
-                      </div>
-                    </div>
-                  </motion.div>
+                {filteredItems.map((cat, idx) => (
+                  <ProductCard3D
+                    key={cat.title || idx}
+                    item={cat}
+                    onOpen3DModal={(item) => {
+                      setSelected3DProduct(item);
+                      setIs3DModalOpen(true);
+                    }}
+                    onOpenAR={(item) => {
+                      setSelectedARProduct(item);
+                      setIsARModalOpen(true);
+                    }}
+                  />
                 ))}
               </AnimatePresence>
             </motion.div>
@@ -688,6 +651,24 @@ export default function Home() {
         <BridalSetPlanner isOpen={isBridalPlannerOpen} onClose={() => setIsBridalPlannerOpen(false)} />
         <GoldRateAlertModal isOpen={isAlertOpen} onClose={() => setIsAlertOpen(false)} />
         <ShowroomTourModal isOpen={isTourOpen} onClose={() => setIsTourOpen(false)} />
+
+        {/* 360° Real-Time 3D Model Inspector Modal */}
+        <Quick3DViewerModal
+          isOpen={is3DModalOpen}
+          onClose={() => setIs3DModalOpen(false)}
+          product={selected3DProduct}
+          onOpenAR={(prod) => {
+            setSelectedARProduct(prod);
+            setIsARModalOpen(true);
+          }}
+        />
+
+        {/* Live Camera AR Try-On Modal */}
+        <VirtualTryOnModal
+          isOpen={isARModalOpen}
+          onClose={() => setIsARModalOpen(false)}
+          initialProduct={selectedARProduct}
+        />
 
       </div>
     </PageTransition>
