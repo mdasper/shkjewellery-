@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased bg-brand-cream text-[#1A0A0C] font-sans overflow-x-hidden;
+  }
+
+  h1, h2, h3 {
+    @apply font-cormorant tracking-wide;
+  }
+
+  p {
+    @apply font-medium leading-relaxed;
+  }
+}
+
+/* Ultra-Sleek Golden Border Glow & Smooth Scale Hover Class */
+.hover-gold-ring {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-gold-ring:hover {
+  transform: translateY(-4px) scale(1.015);
+  border-color: #FFD700 !important;
+  box-shadow: 0 15px 35px rgba(59, 7, 11, 0.2), 0 0 25px rgba(255, 215, 0, 0.45);
+}
+
+/* Metallic Gold Text effect */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Premium Metallic Gold Border */
+.border-gold-gradient {
+  border-image: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728) 1;
+}
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4AF37;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3B070B;
+}
+
+/* Ticker Scroll Animation with Zero Text Overlap */
+@keyframes scrollTicker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker-wrapper {
+  display: inline-flex;
+  width: max-content;
+  flex-shrink: 0;
+  animation: scrollTicker 30s linear infinite;
+}
+
+.animate-ticker-wrapper:hover {
+  animation-play-state: paused;
+}
+
+/* Shimmer Button Effect */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 70%
+  );
+  transform: rotate(30deg) translateX(-100%);
+  transition: transform 0.8s ease-in-out;
+}
+.btn-shimmer:hover::after {
+  transform: rotate(30deg) translateX(100%);
+}
+
+/* 3D Floating Particle Animation */
+@keyframes floatParticle {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(6deg); }
+}
+
+.animate-float-3d {
+  animation: floatParticle 5s ease-in-out infinite;
+}
