@@ -9,7 +9,7 @@ export default function ProductCard3D({ item, onOpen3DModal, onOpenAR }) {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [glintPos, setGlintPos] = useState({ x: 50, y: 50, opacity: 0 });
-  const { isWishlisted, toggleWishlist } = useWishlist();
+  const { isInWishlist, toggleWishlist } = useWishlist() || {};
 
   const handleMouseMove = (e) => {
     const card = cardRef.current;
@@ -39,7 +39,7 @@ export default function ProductCard3D({ item, onOpen3DModal, onOpenAR }) {
     setGlintPos((prev) => ({ ...prev, opacity: 0 }));
   };
 
-  const wished = isWishlisted(item.id || item.code || item.title);
+  const wished = isInWishlist ? isInWishlist(item.id || item.code || item.title) : false;
 
   return (
     <motion.div
